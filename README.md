@@ -1,0 +1,76 @@
+# Java E-Commerce Platform
+
+A full-stack e-commerce web application built using Java and Spring Boot.  
+The application provides product management, categories, shopping cart, checkout, orders, and user-based functionality.
+
+## Features
+
+### User Features
+- User registration and login
+- Browse products
+- Search products
+- Browse products by category
+- Pagination for products
+- Add products to cart
+- Update cart quantities
+- Remove items from cart
+- Checkout
+- Payment method selection
+  - Card
+  - UPI
+  - Cash on Delivery
+- Place orders
+- View order history
+- View individual order details
+
+### Admin Features
+- Manage categories
+- Add, edit and delete categories
+- Manage products
+- View all orders
+- Update order status
+
+## Technology Stack
+
+- Java
+- Spring Boot
+- Spring MVC
+- Spring Data JPA
+- Spring Security
+- Hibernate
+- Thymeleaf
+- Maven
+- JUnit
+- Mockito
+- MockMvc
+- MySQL
+
+## Project Structure
+
+```text
+src/
+├── main/
+│   ├── java/
+│   │   └── com/datalcott/ecommerce/
+│   │       ├── controller/
+│   │       ├── entity/
+│   │       ├── repository/
+│   │       └── service/
+│   │
+│   └── resources/
+│       ├── templates/
+│       └── application.properties
+│
+└── test/
+    └── java/
+        └── com/datalcott/ecommerce/
+            ├── CartControllerTest.java
+            ├── CartItemControllerTest.java
+            ├── CartItemServiceTest.java
+            ├── CartServiceTest.java
+            ├── CategoryControllerTest.java
+            ├── CategoryServiceTest.java
+            ├── CheckoutControllerTest.java
+            ├── OrderControllerTest.java
+            ├── OrderServiceTest.java
+            └── ProductControllerTest.java
