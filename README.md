@@ -1,3 +1,5 @@
+[![Java E-Commerce Tests](https://github.com/maniteja09/ecommerce/actions/workflows/tests.yml/badge.svg)](https://github.com/maniteja09/ecommerce/actions/workflows/tests.yml)
+
 # Java E-Commerce Platform
 
 A full-stack e-commerce web application built using Java and Spring Boot.  
