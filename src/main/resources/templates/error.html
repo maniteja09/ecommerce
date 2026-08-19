@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Error | ShopEase</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+
+        /* Navbar */
+
+        .navbar {
+            background: #111827;
+            color: white;
+
+            padding: 20px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+
+        .logout {
+            color: #ff6b6b !important;
+        }
+
+
+        /* Error Section */
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+
+            margin: 80px auto;
+        }
+
+
+        .error-card {
+            background: white;
+
+            padding: 60px 40px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                    0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+
+        .error-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+
+        .error-card h1 {
+            font-size: 42px;
+            margin-bottom: 18px;
+        }
+
+
+        .error-message {
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            border: 1px solid #fecaca;
+
+            border-radius: 10px;
+
+            padding: 18px;
+
+            font-size: 17px;
+
+            margin: 25px auto;
+
+            max-width: 650px;
+        }
+
+
+        /* Buttons */
+
+        .buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .btn {
+            display: inline-block;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        .home-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        .home-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        .products-btn {
+            background: #111827;
+            color: white;
+        }
+
+
+        .products-btn:hover {
+            background: #374151;
+        }
+
+
+        /* Footer */
+
+        footer {
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 100px;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 18px 5%;
+            }
+
+
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+
+            .container {
+                width: 95%;
+                margin-top: 45px;
+            }
+
+
+            .error-card {
+                padding: 45px 25px;
+            }
+
+
+            .error-card h1 {
+                font-size: 32px;
+            }
+
+
+            .buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/admin"
+           class="admin-btn">
+            Admin
+        </a>
+
+        <a href="/logout"
+           class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- Error Content -->
+
+<div class="container">
+
+
+    <div class="error-card">
+
+
+        <div class="error-icon">
+            ⚠️
+        </div>
+
+
+        <h1>
+            Oops! Something went wrong.
+        </h1>
+
+
+        <div class="error-message"
+             th:text="${errorMessage}">
+
+            Something went wrong.
+            Please try again.
+
+        </div>
+
+
+        <div class="buttons">
+
+
+            <a href="/"
+               class="btn home-btn">
+
+                🏠 Back to Home
+
+            </a>
+
+
+            <a href="/products"
+               class="btn products-btn">
+
+                🛍️ View Products
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- Footer -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

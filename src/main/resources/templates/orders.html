@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | My Orders</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-link {
+            background: #2563eb;
+            padding: 9px 14px;
+            border-radius: 7px;
+        }
+
+        .logout-link {
+            color: #fca5a5 !important;
+        }
+
+        /* ================= MAIN ================= */
+
+        .orders-section {
+            width: 88%;
+            max-width: 1000px;
+            margin: 45px auto 70px;
+        }
+
+        .page-heading {
+            text-align: center;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 35px;
+        }
+
+        /* ================= EMPTY ORDERS ================= */
+
+        .empty-orders {
+            background: white;
+            border-radius: 16px;
+            padding: 70px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .empty-orders h2 {
+            margin-bottom: 12px;
+        }
+
+        .empty-orders p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .shop-button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .shop-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= ORDER CARD ================= */
+
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 18px;
+            margin-bottom: 18px;
+        }
+
+        .order-number {
+            font-size: 22px;
+        }
+
+        .order-date {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= ORDER DETAILS ================= */
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .detail-label {
+            display: block;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .amount {
+            color: #2563eb;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .payment-status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        /* ================= VIEW DETAILS ================= */
+
+        .order-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .view-details {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .view-details:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= CONTINUE ================= */
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .orders-section {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+            .page-heading {
+                font-size: 30px;
+            }
+
+            .order-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .order-details {
+                grid-template-columns: 1fr;
+            }
+
+            .order-bottom {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .view-details {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🛒 ShopEase
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist ❤️
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a sec:authorize="hasRole('ADMIN')"
+           href="/admin"
+           class="admin-link">
+
+            Admin
+
+        </a>
+
+        <a href="/logout"
+           class="logout-link">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="orders-section">
+
+    <h1 class="page-heading">
+        My Orders 📦
+    </h1>
+
+    <p class="page-subtitle">
+        Track and view your previous orders.
+    </p>
+
+
+    <!-- ================= EMPTY ORDERS ================= -->
+
+    <div th:if="${#lists.isEmpty(orders)}"
+         class="empty-orders">
+
+        <div class="empty-icon">
+            📦
+        </div>
+
+        <h2>
+            No orders yet
+        </h2>
+
+        <p>
+            You haven't placed any orders yet.
+        </p>
+
+        <a href="/products"
+           class="shop-button">
+
+            Start Shopping
+
+        </a>
+
+    </div>
+
+
+    <!-- ================= ORDERS ================= -->
+
+    <div th:each="order : ${orders}"
+         class="order-card">
+
+
+        <!-- TOP -->
+
+        <div class="order-top">
+
+            <h2 class="order-number">
+
+                Order #
+
+                <span th:text="${order.id}">
+                    1
+                </span>
+
+            </h2>
+
+
+            <span class="order-date">
+
+                📅
+
+                <!-- FORMATTED DATE & TIME -->
+                <span th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}">
+                    Date
+                </span>
+
+            </span>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="order-details">
+
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Total Amount
+                </span>
+
+                <span class="detail-value amount">
+
+                    ₹<span th:text="${order.totalAmount}">
+                        0
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Order Status
+                </span>
+
+                <span class="status"
+                      th:text="${order.status}">
+
+                    PLACED
+
+                </span>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span class="detail-label">
+                    Payment Status
+                </span>
+
+                <span class="payment-status"
+                      th:text="${order.paymentStatus}">
+
+                    PAID
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BOTTOM -->
+
+        <div class="order-bottom">
+
+            <span>
+                Order placed successfully 🎉
+            </span>
+
+            <a th:href="@{/orders/{id}(id=${order.id})}"
+               class="view-details">
+
+                View Details →
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTINUE SHOPPING -->
+
+    <a href="/products"
+       class="continue-shopping">
+
+        ← Continue Shopping
+
+    </a>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 ShopEase. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

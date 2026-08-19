@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Product Form | ShopEase</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+
+            padding: 20px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+
+        .logout {
+            color: #ff6b6b !important;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+
+            margin: 60px auto;
+        }
+
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+
+        .page-header p {
+            color: #64748b;
+            font-size: 20px;
+        }
+
+
+        /* ================= FORM CARD ================= */
+
+        .form-card {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                    0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+
+        .form-card h2 {
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 9px;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            outline: none;
+
+            background: white;
+        }
+
+
+        textarea {
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error {
+
+            color: #dc2626;
+
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+            padding: 8px 12px;
+
+            border-radius: 6px;
+
+            margin-top: 8px;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= IMAGE PREVIEW ================= */
+
+        .image-preview {
+
+            margin-top: 15px;
+
+            text-align: center;
+        }
+
+
+        .image-preview img {
+
+            width: 180px;
+
+            height: 180px;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .button-row {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 35px;
+        }
+
+
+        .save-btn {
+
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .save-btn:hover {
+
+            background: #1d4ed8;
+        }
+
+
+        .back-btn {
+
+            background: #111827;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .back-btn:hover {
+
+            background: #374151;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 100px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 18px 5%;
+            }
+
+
+            .nav-links {
+
+                gap: 12px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            .container {
+
+                width: 95%;
+
+                margin-top: 35px;
+            }
+
+
+            .page-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .form-card {
+
+                padding: 25px;
+            }
+
+
+            .button-row {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+
+        🛒 ShopEase
+
+    </div>
+
+
+    <div class="nav-links">
+
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/products">
+            Products
+        </a>
+
+
+        <a href="/profile">
+            Profile
+        </a>
+
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+
+        <a href="/orders">
+            Orders
+        </a>
+
+
+        <a href="/admin"
+           class="admin-btn">
+
+            Admin
+
+        </a>
+
+
+        <a href="/logout"
+           class="logout">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+
+    <div class="page-header">
+
+
+        <h1>
+
+            Product Form 📦
+
+        </h1>
+
+
+        <p>
+
+            Add or update products in your ShopEase store.
+
+        </p>
+
+
+    </div>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="form-card">
+
+
+        <h2>
+
+            Product Information
+
+        </h2>
+
+
+        <form action="/products/save"
+              method="post"
+              th:object="${product}">
+
+
+            <!-- Hidden ID -->
+
+            <input type="hidden"
+                   th:field="*{id}">
+
+
+            <!-- Product Name -->
+
+            <div class="form-group">
+
+
+                <label for="name">
+
+                    Product Name
+
+                </label>
+
+
+                <input type="text"
+                       id="name"
+                       th:field="*{name}"
+                       placeholder="Enter product name"
+                       required>
+
+
+                <p class="error"
+                   th:if="${#fields.hasErrors('name')}"
+                   th:errors="*{name}">
+                </p>
+
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="form-group">
+
+
+                <label for="description">
+
+                    Description
+
+                </label>
+
+
+                <textarea id="description"
+                          th:field="*{description}"
+                          placeholder="Enter product description"
+                          required></textarea>
+
+
+                <p class="error"
+                   th:if="${#fields.hasErrors('description')}"
+                   th:errors="*{description}">
+                </p>
+
+
+            </div>
+
+
+            <!-- Price -->
+
+            <div class="form-group">
+
+
+                <label for="price">
+
+                    Price (₹)
+
+                </label>
+
+
+                <input type="number"
+                       id="price"
+                       th:field="*{price}"
+                       step="0.01"
+                       min="0"
+                       placeholder="Enter product price"
+                       required>
+
+
+                <p class="error"
+                   th:if="${#fields.hasErrors('price')}"
+                   th:errors="*{price}">
+                </p>
+
+
+            </div>
+
+
+            <!-- Stock -->
+
+            <div class="form-group">
+
+
+                <label for="stock">
+
+                    Stock Quantity
+
+                </label>
+
+
+                <input type="number"
+                       id="stock"
+                       th:field="*{stock}"
+                       min="0"
+                       placeholder="Enter available stock"
+                       required>
+
+
+                <p class="error"
+                   th:if="${#fields.hasErrors('stock')}"
+                   th:errors="*{stock}">
+                </p>
+
+
+            </div>
+
+
+            <!-- Image URL -->
+
+            <div class="form-group">
+
+
+                <label for="imageUrl">
+
+                    Product Image URL
+
+                </label>
+
+
+                <input type="text"
+                       id="imageUrl"
+                       th:field="*{imageUrl}"
+                       placeholder="https://example.com/image.jpg">
+
+
+                <div class="image-preview"
+                     th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}">
+
+                    <img th:src="${product.imageUrl}"
+                         alt="Product Image">
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="form-group">
+
+
+                <label for="category">
+
+                    Category
+
+                </label>
+
+
+                <select id="category"
+                        name="category.id"
+                        required>
+
+
+                    <option value="">
+
+                        Select Category
+
+                    </option>
+
+
+                    <option th:each="category : ${categories}"
+                            th:value="${category.id}"
+                            th:text="${category.name}"
+                            th:selected="${product.category != null and product.category.id == category.id}">
+
+                    </option>
+
+
+                </select>
+
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="button-row">
+
+
+                <button type="submit"
+                        class="save-btn">
+
+                    💾 Save Product
+
+                </button>
+
+
+                <a href="/admin/products"
+                   class="back-btn">
+
+                    ← Back to Products
+
+                </a>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

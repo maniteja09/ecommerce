@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Online Store</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-link {
+            background: #2563eb;
+            padding: 9px 15px;
+            border-radius: 7px;
+        }
+
+        .logout-link {
+            color: #fca5a5 !important;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 7%;
+            background: linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #ffffff
+            );
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 52px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .hero-content h1 span {
+            color: #2563eb;
+        }
+
+        .hero-content p {
+            font-size: 19px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+        .btn-secondary:hover {
+            background: #eff6ff;
+        }
+
+        .hero-icon {
+            font-size: 180px;
+        }
+
+
+        /* FEATURES */
+
+        .features {
+            padding: 60px 7%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .feature-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+
+        /* ACCOUNT */
+
+        .account-section {
+            padding: 60px 7%;
+            text-align: center;
+            background: #eef2ff;
+        }
+
+        .account-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .account-section p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 25px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 50px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 38px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .hero-icon {
+                font-size: 100px;
+                margin-top: 30px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <div sec:authorize="isAuthenticated()">
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/cart">
+                Cart 🛒
+            </a>
+
+            <a href="/wishlist">
+                Wishlist ❤️
+            </a>
+
+            <a href="/orders">
+                Orders
+            </a>
+
+            <a sec:authorize="hasRole('ADMIN')"
+               href="/admin"
+               class="admin-link">
+                Admin
+            </a>
+
+            <a href="/logout"
+               class="logout-link">
+                Logout
+            </a>
+
+        </div>
+
+        <div sec:authorize="!isAuthenticated()">
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a href="/register">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Shop Smart.<br>
+            Shop <span>Better.</span>
+        </h1>
+
+        <p>
+            Discover quality products at great prices.
+            Everything you need, all in one place.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/products"
+               class="btn btn-primary">
+                🛍️ Shop Now
+            </a>
+
+            <div sec:authorize="!isAuthenticated()">
+
+                <a href="/register"
+                   class="btn btn-secondary">
+                    Create Account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-icon">
+        🛍️
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+    <h2 class="section-title">
+        Why Shop With Us?
+    </h2>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🚚
+            </div>
+
+            <h3>
+                Fast Delivery
+            </h3>
+
+            <p>
+                Get your orders delivered quickly
+                and safely to your doorstep.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🔒
+            </div>
+
+            <h3>
+                Secure Shopping
+            </h3>
+
+            <p>
+                Your account and personal information
+                are protected with secure authentication.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ⭐
+            </div>
+
+            <h3>
+                Quality Products
+            </h3>
+
+            <p>
+                Explore products with customer
+                reviews and ratings.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ACCOUNT SECTION ================= -->
+
+<section class="account-section"
+         sec:authorize="!isAuthenticated()">
+
+    <h2>
+        Ready to Start Shopping?
+    </h2>
+
+    <p>
+        Create your account and explore our products today.
+    </p>
+
+    <a href="/register"
+       class="btn btn-primary">
+        Create Account
+    </a>
+
+</section>
+
+
+<section class="account-section"
+         sec:authorize="isAuthenticated()">
+
+    <h2>
+        Welcome Back! 👋
+    </h2>
+
+    <p>
+        Continue exploring our products and manage your orders.
+    </p>
+
+    <a href="/products"
+       class="btn btn-primary">
+        Continue Shopping
+    </a>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 ShopEase. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+</html>

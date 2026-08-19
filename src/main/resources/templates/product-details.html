@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Product Details</title>
+
+    <style>
+
+        /* ================= RESET ================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-link {
+            background: #2563eb;
+            padding: 9px 14px;
+            border-radius: 7px;
+        }
+
+        .logout-link {
+            color: #fca5a5 !important;
+        }
+
+
+        /* ================= MAIN PRODUCT ================= */
+
+        .product-section {
+            width: 88%;
+            max-width: 1100px;
+
+            margin: 35px auto;
+        }
+
+        .product-box {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 30px;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+
+        /* ================= IMAGE ================= */
+
+        .product-image-container {
+            background: #f8fafc;
+
+            border-radius: 14px;
+
+            min-height: 380px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 380px;
+
+            /*
+             * Contain keeps the complete
+             * product image visible.
+             */
+            object-fit: contain;
+
+            padding: 12px;
+        }
+
+
+        /* ================= PRODUCT INFO ================= */
+
+        .product-info {
+            padding: 5px 0;
+        }
+
+        .product-name {
+            font-size: 34px;
+
+            margin-bottom: 14px;
+
+            color: #111827;
+        }
+
+        .description-title {
+            font-size: 16px;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        .description {
+            color: #6b7280;
+
+            line-height: 1.6;
+
+            margin-bottom: 15px;
+        }
+
+        .category {
+            display: inline-block;
+
+            background: #eef2ff;
+
+            color: #4338ca;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+
+            margin-bottom: 10px;
+        }
+
+        .stock {
+            color: #16a34a;
+
+            font-weight: bold;
+
+            margin-bottom: 18px;
+        }
+
+        .out-stock {
+            color: #dc2626;
+        }
+
+
+        /* ================= CART ================= */
+
+        .cart-form {
+            background: #f8fafc;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .quantity-label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .quantity-input {
+            width: 100px;
+
+            padding: 10px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            margin-bottom: 12px;
+        }
+
+        .cart-button {
+            width: 100%;
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .cart-button:hover {
+            background: #1d4ed8;
+        }
+
+        .cart-button:disabled {
+            background: #9ca3af;
+
+            cursor: not-allowed;
+        }
+
+
+        /* ================= WISHLIST ================= */
+
+        .wishlist-button {
+            width: 100%;
+
+            border: 1px solid #e11d48;
+
+            background: white;
+
+            color: #e11d48;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .wishlist-button:hover {
+            background: #fff1f2;
+        }
+
+
+        /* ================= REVIEWS ================= */
+
+        .reviews-section {
+            margin-top: 25px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                    0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 26px;
+
+            margin-bottom: 20px;
+        }
+
+        .no-reviews {
+            color: #6b7280;
+
+            background: #f8fafc;
+
+            padding: 18px;
+
+            border-radius: 10px;
+        }
+
+        .review-card {
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin-bottom: 12px;
+        }
+
+        .review-user {
+            font-size: 17px;
+
+            margin-bottom: 7px;
+        }
+
+        .rating {
+            color: #f59e0b;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .review-comment {
+            color: #374151;
+
+            line-height: 1.6;
+
+            margin-bottom: 8px;
+        }
+
+        .review-date {
+            color: #9ca3af;
+
+            font-size: 13px;
+        }
+
+
+        /* ================= WRITE REVIEW ================= */
+
+        .review-form-section {
+            margin-top: 25px;
+
+            background: #f8fafc;
+
+            padding: 22px;
+
+            border-radius: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        .rating-select {
+            width: 180px;
+
+            padding: 10px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 7px;
+
+            background: white;
+        }
+
+        .comment-box {
+            width: 100%;
+
+            max-width: 650px;
+
+            min-height: 120px;
+
+            padding: 12px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            resize: vertical;
+
+            font-size: 15px;
+        }
+
+        .error-message {
+            color: #dc2626;
+
+            font-size: 14px;
+
+            margin-top: 7px;
+        }
+
+        .submit-review {
+            display: inline-block;
+
+            border: none;
+
+            background: #111827;
+
+            color: white;
+
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            text-decoration: none;
+        }
+
+        .submit-review:hover {
+            background: #374151;
+        }
+
+
+        /* ================= BACK BUTTON ================= */
+
+        .back-link {
+            display: inline-block;
+
+            margin: 25px 0 40px;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+
+            color: #d1d5db;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        /* ================= TABLET ================= */
+
+        @media (max-width: 1000px) {
+
+            .product-section {
+                width: 92%;
+            }
+
+            .product-box {
+                gap: 25px;
+            }
+
+            .product-name {
+                font-size: 30px;
+            }
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 12px;
+            }
+
+            .product-section {
+                width: 92%;
+
+                margin: 25px auto;
+            }
+
+            .product-box {
+                grid-template-columns: 1fr;
+
+                padding: 20px;
+
+                gap: 20px;
+            }
+
+            .product-image-container {
+                min-height: 300px;
+            }
+
+            .product-image {
+                height: 300px;
+            }
+
+            .product-name {
+                font-size: 30px;
+            }
+
+            .reviews-section {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🛒 ShopEase
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/products">
+            Products
+        </a>
+
+
+        <!-- ================= LOGGED IN ================= -->
+
+        <div sec:authorize="isAuthenticated()">
+
+            <a href="/profile">
+                Profile
+            </a>
+
+
+            <a href="/cart">
+                Cart 🛒
+            </a>
+
+
+            <a href="/wishlist">
+                Wishlist ❤️
+            </a>
+
+
+            <a href="/orders">
+                Orders
+            </a>
+
+
+            <a sec:authorize="hasRole('ADMIN')"
+               href="/admin"
+               class="admin-link">
+
+                Admin
+
+            </a>
+
+
+            <a href="/logout"
+               class="logout-link">
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+        <!-- ================= NOT LOGGED IN ================= -->
+
+        <div sec:authorize="!isAuthenticated()">
+
+            <a href="/login">
+                Login
+            </a>
+
+
+            <a href="/register">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= PRODUCT ================= -->
+
+<main class="product-section">
+
+
+    <div class="product-box">
+
+
+        <!-- ================= PRODUCT IMAGE ================= -->
+
+        <div class="product-image-container">
+
+            <img th:src="${product.imageUrl}"
+                 alt="Product Image"
+                 class="product-image">
+
+        </div>
+
+
+
+        <!-- ================= PRODUCT INFORMATION ================= -->
+
+        <div class="product-info">
+
+
+            <h1 class="product-name"
+                th:text="${product.name}">
+
+                Product Name
+
+            </h1>
+
+
+            <p class="description-title">
+                Description
+            </p>
+
+
+            <p class="description"
+               th:text="${product.description}">
+
+                Product Description
+
+            </p>
+
+
+            <!-- CATEGORY -->
+
+            <span class="category">
+
+                🏷️
+
+                <span th:text="${product.category.name}">
+                    Category
+                </span>
+
+            </span>
+
+
+            <!-- PRICE -->
+
+            <p class="price">
+
+                ₹<span th:text="${product.price}">
+                    0
+                </span>
+
+            </p>
+
+
+            <!-- STOCK -->
+
+            <p th:class="${product.stock > 0 ? 'stock' : 'stock out-stock'}">
+
+
+                <span th:if="${product.stock > 0}">
+
+                    ✓ In Stock —
+
+                    <span th:text="${product.stock}">
+                        0
+                    </span>
+
+                    available
+
+                </span>
+
+
+                <span th:if="${product.stock == 0}">
+
+                    ✕ Out of Stock
+
+                </span>
+
+
+            </p>
+
+
+
+            <!-- ================= ADD TO CART ================= -->
+
+            <form th:action="@{/cart/add/{id}(id=${product.id})}"
+                  method="post"
+                  class="cart-form">
+
+
+                <label class="quantity-label">
+
+                    Quantity
+
+                </label>
+
+
+                <input type="number"
+                       name="quantity"
+                       value="1"
+                       min="1"
+                       th:max="${product.stock}"
+                       class="quantity-input"
+                       required>
+
+
+                <button type="submit"
+                        class="cart-button"
+                        th:disabled="${product.stock == 0}">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </form>
+
+
+
+            <!-- ================= WISHLIST ================= -->
+
+            <form th:action="@{/wishlist/add/{id}(id=${product.id})}"
+                  method="post">
+
+
+                <button type="submit"
+                        class="wishlist-button">
+
+                    ❤️ Add to Wishlist
+
+                </button>
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= REVIEWS ================= -->
+
+    <section class="reviews-section">
+
+
+        <h2 class="section-title">
+
+            Customer Reviews ⭐
+
+        </h2>
+
+
+
+        <!-- ================= NO REVIEWS ================= -->
+
+        <div th:if="${#lists.isEmpty(reviews)}"
+             class="no-reviews">
+
+            No reviews yet.
+
+            Be the first to review this product! 🎉
+
+        </div>
+
+
+
+        <!-- ================= EXISTING REVIEWS ================= -->
+
+        <div th:each="review : ${reviews}"
+             class="review-card">
+
+
+            <p class="review-user">
+
+                👤
+
+                <strong th:text="${review.user.name}">
+                    User
+                </strong>
+
+            </p>
+
+
+            <p class="rating">
+
+                ⭐
+
+                <span th:text="${review.rating}">
+                    5
+                </span>
+
+                /5
+
+            </p>
+
+
+            <p class="review-comment"
+               th:text="${review.comment}">
+
+                Review comment
+
+            </p>
+
+
+            <p class="review-date">
+
+    <span th:text="${#temporals.format(review.createdDate, 'dd MMM yyyy, hh:mm a')}">
+        Date
+    </span>
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- ================= WRITE REVIEW ================= -->
+
+        <div class="review-form-section"
+             sec:authorize="isAuthenticated()">
+
+
+            <h2 class="section-title">
+
+                Write a Review ✍️
+
+            </h2>
+
+
+            <form th:action="@{/reviews/add/{id}(id=${product.id})}"
+                  method="post"
+                  th:object="${review}">
+
+
+                <!-- RATING -->
+
+                <div class="form-group">
+
+
+                    <label class="form-label">
+
+                        Rating
+
+                    </label>
+
+
+                    <select th:field="*{rating}"
+                            class="rating-select">
+
+
+                        <option value="0">
+                            Select Rating
+                        </option>
+
+
+                        <option value="5">
+                            5 ⭐
+                        </option>
+
+
+                        <option value="4">
+                            4 ⭐
+                        </option>
+
+
+                        <option value="3">
+                            3 ⭐
+                        </option>
+
+
+                        <option value="2">
+                            2 ⭐
+                        </option>
+
+
+                        <option value="1">
+                            1 ⭐
+                        </option>
+
+
+                    </select>
+
+
+                    <p th:if="${#fields.hasErrors('rating')}"
+                       th:errors="*{rating}"
+                       class="error-message">
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- COMMENT -->
+
+                <div class="form-group">
+
+
+                    <label class="form-label">
+
+                        Comment
+
+                    </label>
+
+
+                    <textarea th:field="*{comment}"
+                              class="comment-box"
+                              placeholder="Write your review..."></textarea>
+
+
+                    <p th:if="${#fields.hasErrors('comment')}"
+                       th:errors="*{comment}"
+                       class="error-message">
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit"
+                        class="submit-review">
+
+                    Submit Review
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= LOGIN TO REVIEW ================= -->
+
+        <div class="review-form-section"
+             sec:authorize="!isAuthenticated()">
+
+
+            <h2 class="section-title">
+
+                Want to write a review? ✍️
+
+            </h2>
+
+
+            <p>
+
+                Please login to submit a review.
+
+            </p>
+
+
+            <br>
+
+
+            <a href="/login"
+               class="submit-review">
+
+                Login to Review
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= BACK ================= -->
+
+    <a href="/products"
+       class="back-link">
+
+        ← Back to Products
+
+    </a>
+
+
+</main>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+
+        © 2026 ShopEase. All Rights Reserved.
+
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

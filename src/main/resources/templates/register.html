@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | ShopEase</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+
+            padding: 20px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 90%;
+            max-width: 550px;
+
+            margin: 60px auto;
+        }
+
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+
+        .page-header h1 {
+            font-size: 44px;
+            margin-bottom: 12px;
+        }
+
+
+        .page-header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+
+        /* ================= REGISTER CARD ================= */
+
+        .register-card {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                    0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+
+        .register-icon {
+            text-align: center;
+
+            font-size: 65px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 9px;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+
+        input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* ================= VALIDATION ERROR ================= */
+
+        .error-message {
+            background: #fef2f2;
+
+            color: #dc2626;
+
+            border: 1px solid #fecaca;
+
+            padding: 9px 12px;
+
+            border-radius: 7px;
+
+            margin-top: 8px;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= REGISTER BUTTON ================= */
+
+        .register-btn {
+            width: 100%;
+
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 8px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 8px;
+        }
+
+
+        .register-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= LINKS ================= */
+
+        .links {
+            text-align: center;
+
+            margin-top: 25px;
+        }
+
+
+        .links p {
+            color: #64748b;
+
+            margin-bottom: 12px;
+        }
+
+
+        .links a {
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+
+        .home-link {
+            display: inline-block;
+
+            margin-top: 18px;
+
+            color: #111827 !important;
+
+            background: #f1f5f9;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+        }
+
+
+        .home-link:hover {
+            background: #e2e8f0;
+
+            text-decoration: none !important;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 100px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 18px 5%;
+            }
+
+
+            .nav-links {
+                gap: 15px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            .container {
+                width: 95%;
+
+                margin-top: 40px;
+            }
+
+
+            .register-card {
+                padding: 28px 22px;
+            }
+
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+
+    <div class="nav-links">
+
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/products">
+            Products
+        </a>
+
+
+        <a href="/login">
+            Login
+        </a>
+
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+
+    <div class="page-header">
+
+
+        <h1>
+            Create Your Account 👋
+        </h1>
+
+
+        <p>
+            Join ShopEase and start shopping today.
+        </p>
+
+
+    </div>
+
+
+    <!-- REGISTER CARD -->
+
+    <div class="register-card">
+
+
+        <div class="register-icon">
+            📝
+        </div>
+
+
+        <form action="/register"
+              method="post"
+              th:object="${user}">
+
+
+            <!-- ================= NAME ================= -->
+
+            <div class="form-group">
+
+
+                <label for="name">
+                    Full Name
+                </label>
+
+
+                <input type="text"
+                       id="name"
+                       th:field="*{name}"
+                       placeholder="Enter your full name"
+                       autocomplete="name">
+
+
+                <p class="error-message"
+                   th:if="${#fields.hasErrors('name')}"
+                   th:errors="*{name}">
+                </p>
+
+
+            </div>
+
+
+            <!-- ================= EMAIL ================= -->
+
+            <div class="form-group">
+
+
+                <label for="email">
+                    Email Address
+                </label>
+
+
+                <input type="email"
+                       id="email"
+                       th:field="*{email}"
+                       placeholder="Enter your email address"
+                       autocomplete="email">
+
+
+                <p class="error-message"
+                   th:if="${#fields.hasErrors('email')}"
+                   th:errors="*{email}">
+                </p>
+
+
+            </div>
+
+
+            <!-- ================= PASSWORD ================= -->
+
+            <div class="form-group">
+
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <input type="password"
+                       id="password"
+                       th:field="*{password}"
+                       placeholder="Create a password"
+                       autocomplete="new-password">
+
+
+                <p class="error-message"
+                   th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}">
+                </p>
+
+
+            </div>
+
+
+            <!-- ================= REGISTER ================= -->
+
+            <button type="submit"
+                    class="register-btn">
+
+                ✨ Create Account
+
+            </button>
+
+
+        </form>
+
+
+        <!-- ================= LINKS ================= -->
+
+        <div class="links">
+
+
+            <p>
+                Already have an account?
+            </p>
+
+
+            <a href="/login">
+                Login to your account →
+            </a>
+
+
+            <br>
+
+
+            <a href="/"
+               class="home-link">
+
+                ← Back to Home
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

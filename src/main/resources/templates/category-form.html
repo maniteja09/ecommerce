@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Category Form | ShopEase</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+
+        /* Navbar */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 20px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+
+        .logout {
+            color: #ff6b6b !important;
+        }
+
+
+        /* Main */
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 60px auto;
+        }
+
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+
+        .page-header p {
+            color: #64748b;
+            font-size: 20px;
+        }
+
+
+        /* Form Card */
+
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+
+            box-shadow:
+                    0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+
+        .form-card h2 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+
+            font-size: 16px;
+            outline: none;
+        }
+
+
+        input[type="text"]:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                    0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+
+        /* Buttons */
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+
+            border: none;
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        .cancel-btn {
+            background: #111827;
+            color: white;
+
+            text-decoration: none;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .cancel-btn:hover {
+            background: #374151;
+        }
+
+
+        /* Footer */
+
+        footer {
+            background: #111827;
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 100px;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 18px 5%;
+            }
+
+
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+
+            .container {
+                width: 95%;
+                margin-top: 35px;
+            }
+
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+
+            .form-card {
+                padding: 25px;
+            }
+
+
+            .button-row {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/admin"
+           class="admin-btn">
+            Admin
+        </a>
+
+        <a href="/logout"
+           class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- Main Content -->
+
+<div class="container">
+
+
+    <!-- Page Header -->
+
+    <div class="page-header">
+
+        <h1>
+            Category Form 📁
+        </h1>
+
+        <p>
+            Create or update a product category in your ShopEase store.
+        </p>
+
+    </div>
+
+
+    <!-- Form -->
+
+    <div class="form-card">
+
+
+        <h2>
+            Category Information
+        </h2>
+
+
+        <form action="/categories/save"
+              method="post"
+              th:object="${category}">
+
+
+            <!-- Hidden ID -->
+
+            <input type="hidden"
+                   th:field="*{id}">
+
+
+            <!-- Category Name -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Category Name
+                </label>
+
+
+                <input type="text"
+                       id="name"
+                       th:field="*{name}"
+                       placeholder="Enter category name"
+                       required>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="button-row">
+
+
+                <button type="submit"
+                        class="save-btn">
+
+                    💾 Save Category
+
+                </button>
+
+
+                <a href="/admin/categories"
+                   class="cancel-btn">
+
+                    ← Back to Categories
+
+                </a>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- Footer -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

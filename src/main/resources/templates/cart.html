@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Shopping Cart</title>
+
+    <style>
+
+        /* =========================
+           GLOBAL
+        ========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            min-height: 76px;
+            padding: 0 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .logo:hover {
+            color: #60a5fa;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-link {
+            background: #2563eb;
+            padding: 9px 14px;
+            border-radius: 7px;
+        }
+
+        .admin-link:hover {
+            color: white !important;
+            background: #1d4ed8;
+        }
+
+        .logout-link {
+            color: #fca5a5 !important;
+        }
+
+        .logout-link:hover {
+            color: #f87171 !important;
+        }
+
+
+        /* =========================
+           MAIN SECTION
+        ========================== */
+
+        .cart-section {
+            width: 90%;
+            max-width: 1200px;
+            margin: 45px auto 70px;
+        }
+
+        .page-heading {
+            text-align: center;
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 38px;
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           EMPTY CART
+        ========================== */
+
+        .empty-cart {
+            background: white;
+            border-radius: 18px;
+            padding: 75px 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .empty-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+        }
+
+        .empty-cart h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .empty-cart p {
+            color: #6b7280;
+            margin-bottom: 28px;
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           CART LAYOUT
+        ========================== */
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+
+        /* =========================
+           CART ITEM
+        ========================== */
+
+        .cart-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 155px minmax(0, 1fr);
+            gap: 24px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.045);
+            transition: transform 0.2s ease,
+            box-shadow 0.2s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-image-container {
+            width: 155px;
+            height: 155px;
+            background: #f8fafc;
+            border: 1px solid #eef2f7;
+            border-radius: 13px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+
+        .product-info {
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 23px;
+            line-height: 1.25;
+            margin-bottom: 9px;
+            color: #111827;
+        }
+
+        .description {
+            color: #6b7280;
+            line-height: 1.55;
+            margin-bottom: 13px;
+            font-size: 15px;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price {
+            color: #2563eb;
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 17px;
+        }
+
+
+        /* =========================
+           QUANTITY
+        ========================== */
+
+        .quantity-form {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .quantity-label {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .quantity-input {
+            width: 78px;
+            height: 40px;
+            padding: 8px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        .quantity-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .update-button {
+            height: 40px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 0 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .update-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =========================
+           SUBTOTAL
+        ========================== */
+
+        .subtotal {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #374151;
+        }
+
+        .subtotal span {
+            color: #111827;
+        }
+
+
+        /* =========================
+           REMOVE BUTTON
+        ========================== */
+
+        .remove-button {
+            border: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .remove-button:hover {
+            background: #fecaca;
+        }
+
+
+        /* =========================
+           ORDER SUMMARY
+        ========================== */
+
+        .summary {
+            background: white;
+            padding: 27px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary h2 {
+            font-size: 24px;
+            margin-bottom: 23px;
+            color: #111827;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        .summary-row span:last-child {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .free-delivery {
+            color: #16a34a !important;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+            margin-top: 10px;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .summary-total span:last-child {
+            color: #2563eb;
+        }
+
+
+        /* =========================
+           CHECKOUT
+        ========================== */
+
+        .checkout-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #2563eb;
+            color: white;
+            padding: 15px;
+            border-radius: 9px;
+            margin-top: 23px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.2s ease;
+        }
+
+        .checkout-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           CONTINUE SHOPPING
+        ========================== */
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           SHOP BUTTON
+        ========================== */
+
+        .shop-button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 13px 23px;
+            border-radius: 9px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .shop-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+
+        /* =========================
+           TABLET
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 16px 4%;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .cart-section {
+                width: 92%;
+            }
+
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                flex-direction: column;
+                padding: 18px 4%;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 11px 15px;
+            }
+
+            .cart-section {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+            .page-heading {
+                font-size: 30px;
+            }
+
+            .page-subtitle {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr;
+                padding: 16px;
+            }
+
+            .product-image-container {
+                width: 100%;
+                height: 220px;
+            }
+
+            .product-name {
+                font-size: 21px;
+            }
+
+            .quantity-form {
+                align-items: flex-start;
+            }
+
+            .summary {
+                padding: 22px;
+            }
+        }
+
+
+        /* =========================
+           SMALL MOBILE
+        ========================== */
+
+        @media (max-width: 420px) {
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                font-size: 14px;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            .page-heading {
+                font-size: 27px;
+            }
+
+            .empty-cart {
+                padding: 55px 20px;
+            }
+
+            .product-image-container {
+                height: 190px;
+            }
+
+            .quantity-form {
+                gap: 7px;
+            }
+
+            .quantity-input {
+                width: 70px;
+            }
+
+            .update-button {
+                padding: 0 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================== -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🛒 ShopEase
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <div sec:authorize="isAuthenticated()">
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/cart">
+                Cart 🛒
+            </a>
+
+            <a href="/wishlist">
+                Wishlist ❤️
+            </a>
+
+            <a href="/orders">
+                Orders
+            </a>
+
+            <a sec:authorize="hasRole('ADMIN')"
+               href="/admin"
+               class="admin-link">
+                Admin
+            </a>
+
+            <a href="/logout"
+               class="logout-link">
+                Logout
+            </a>
+
+        </div>
+
+        <div sec:authorize="!isAuthenticated()">
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a href="/register">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     MAIN
+========================== -->
+
+<main class="cart-section">
+
+    <h1 class="page-heading">
+        Shopping Cart 🛒
+    </h1>
+
+    <p class="page-subtitle">
+        Review your items before checkout.
+    </p>
+
+
+    <!-- =========================
+         EMPTY CART
+    ========================== -->
+
+    <div th:if="${#lists.isEmpty(cartItems)}"
+         class="empty-cart">
+
+        <div class="empty-icon">
+            🛒
+        </div>
+
+        <h2>
+            Your cart is empty
+        </h2>
+
+        <p>
+            Looks like you haven't added anything to your cart yet.
+        </p>
+
+        <a href="/products"
+           class="shop-button">
+
+            Continue Shopping
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         CART WITH ITEMS
+    ========================== -->
+
+    <div th:if="${!#lists.isEmpty(cartItems)}"
+         class="cart-layout">
+
+
+        <!-- =========================
+             CART ITEMS
+        ========================== -->
+
+        <div class="cart-items">
+
+            <div th:each="item : ${cartItems}"
+                 class="cart-item">
+
+
+                <!-- PRODUCT IMAGE -->
+
+                <div class="product-image-container">
+
+                    <img th:src="${item.product.imageUrl}"
+                         th:alt="${item.product.name}"
+                         class="product-image">
+
+                </div>
+
+
+                <!-- PRODUCT INFORMATION -->
+
+                <div class="product-info">
+
+                    <h2 class="product-name"
+                        th:text="${item.product.name}">
+
+                        Product Name
+
+                    </h2>
+
+
+                    <p class="description">
+
+                        <span th:text="${item.product.description}">
+                            Product Description
+                        </span>
+
+                    </p>
+
+
+                    <p class="price">
+
+                        ₹<span th:text="${item.product.price}">
+                            0
+                        </span>
+
+                    </p>
+
+
+                    <!-- UPDATE QUANTITY -->
+
+                    <form th:action="@{/cart/update/{id}(id=${item.id})}"
+                          method="post"
+                          class="quantity-form">
+
+                        <label class="quantity-label">
+                            Quantity:
+                        </label>
+
+                        <input type="number"
+                               name="quantity"
+                               th:value="${item.quantity}"
+                               min="1"
+                               th:max="${item.product.stock}"
+                               class="quantity-input"
+                               required>
+
+                        <button type="submit"
+                                class="update-button">
+
+                            Update
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <p class="subtotal">
+
+                        Subtotal:
+                        ₹<span th:text="${item.product.price * item.quantity}">
+                            0
+                        </span>
+
+                    </p>
+
+
+                    <!-- REMOVE -->
+
+                    <form th:action="@{/cart/remove/{id}(id=${item.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                class="remove-button">
+
+                            🗑 Remove
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ORDER SUMMARY
+        ========================== -->
+
+        <aside class="summary">
+
+            <h2>
+                Order Summary
+            </h2>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Items
+                </span>
+
+                <span th:text="${#lists.size(cartItems)}">
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Delivery
+                </span>
+
+                <span class="free-delivery">
+                    FREE
+                </span>
+
+            </div>
+
+
+            <div class="summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <span>
+
+                    ₹<span th:text="${total}">
+                        0
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <a href="/checkout"
+               class="checkout-button">
+
+                Proceed to Checkout →
+
+            </a>
+
+        </aside>
+
+    </div>
+
+
+    <!-- =========================
+         CONTINUE SHOPPING
+    ========================== -->
+
+    <a href="/products"
+       class="continue-shopping">
+
+        ← Continue Shopping
+
+    </a>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <p>
+        © 2026 ShopEase. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

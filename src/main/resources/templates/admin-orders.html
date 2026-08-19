@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Orders | ShopEase</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+        /* Navbar */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 12px 18px;
+            border-radius: 8px;
+        }
+
+        .logout {
+            color: #ff6b6b !important;
+        }
+
+
+        /* Main */
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 60px auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 20px;
+        }
+
+
+        /* Card */
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+            overflow-x: auto;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .card-header h2 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .order-count {
+            background: #e0edff;
+            color: #2563eb;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+
+        /* Table */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        thead {
+            background: #f1f5f9;
+        }
+
+        th {
+            text-align: left;
+            padding: 18px;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 20px 18px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #475569;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .customer {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #2563eb;
+            font-size: 17px;
+        }
+
+
+        /* Status */
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .placed {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .shipped {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .delivered {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .cancelled {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .paid {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+
+        /* Buttons */
+
+        .view-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 7px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .view-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* Update form */
+
+        .update-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        select {
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .update-btn {
+            background: #111827;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .update-btn:hover {
+            background: #2563eb;
+        }
+
+
+        /* Back button */
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 28px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            padding: 14px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+        }
+
+
+        /* Footer */
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 80px;
+        }
+
+
+        /* Mobile */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 18px 5%;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .container {
+                width: 95%;
+                margin-top: 35px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/admin" class="admin-btn">
+            Admin
+        </a>
+
+        <a href="/logout" class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- Main -->
+
+<div class="container">
+
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <h1>
+            Manage Orders 📦
+        </h1>
+
+        <p>
+            View customer orders and manage order information.
+        </p>
+
+    </div>
+
+
+    <!-- Orders Card -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Order List
+            </h2>
+
+            <span class="order-count">
+                Total Orders:
+                <span th:text="${#lists.size(orders)}">0</span>
+            </span>
+
+        </div>
+
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    Order ID
+                </th>
+
+                <th>
+                    User
+                </th>
+
+                <th>
+                    Total Amount
+                </th>
+
+                <th>
+                    Order Status
+                </th>
+
+                <th>
+                    Payment Status
+                </th>
+
+                <th>
+                    Order Date
+                </th>
+
+                <th>
+                    Actions
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+            <tr th:each="order : ${orders}">
+
+
+                <!-- Order ID -->
+
+                <td class="order-id">
+
+                    #
+                    <span th:text="${order.id}">
+                        1
+                    </span>
+
+                </td>
+
+
+                <!-- User -->
+
+                <td class="customer">
+
+                    <span th:text="${order.user.name}">
+                        User
+                    </span>
+
+                </td>
+
+
+                <!-- Amount -->
+
+                <td class="amount">
+
+                    ₹<span th:text="${order.totalAmount}">
+                        0
+                    </span>
+
+                </td>
+
+
+                <!-- Order Status -->
+
+                <td>
+
+                    <span class="status placed"
+                          th:if="${order.status == 'PLACED'}">
+
+                        PLACED
+
+                    </span>
+
+
+                    <span class="status shipped"
+                          th:if="${order.status == 'SHIPPED'}">
+
+                        SHIPPED
+
+                    </span>
+
+
+                    <span class="status delivered"
+                          th:if="${order.status == 'DELIVERED'}">
+
+                        DELIVERED
+
+                    </span>
+
+
+                    <span class="status cancelled"
+                          th:if="${order.status == 'CANCELLED'}">
+
+                        CANCELLED
+
+                    </span>
+
+                </td>
+
+
+                <!-- Payment Status -->
+
+                <td>
+
+                    <span class="status paid"
+                          th:text="${order.paymentStatus}">
+
+                        PAID
+
+                    </span>
+
+                </td>
+
+
+                <!-- Date -->
+
+                <td>
+
+                    <span th:text="${order.orderDate}">
+                        Date
+                    </span>
+
+                </td>
+
+
+                <!-- Actions -->
+
+                <td>
+
+
+                    <!-- View Details -->
+
+                    <a class="view-btn"
+                       th:href="@{'/orders/' + ${order.id}}">
+
+                        👁 View Details
+
+                    </a>
+
+
+                    <!-- Update Status -->
+
+                    <form class="update-form"
+                          action="/admin/orders/update-status"
+                          method="post">
+
+
+                        <input type="hidden"
+                               name="orderId"
+                               th:value="${order.id}">
+
+
+                        <select name="status">
+
+
+                            <option value="PLACED"
+                                    th:selected="${order.status == 'PLACED'}">
+
+                                PLACED
+
+                            </option>
+
+
+                            <option value="SHIPPED"
+                                    th:selected="${order.status == 'SHIPPED'}">
+
+                                SHIPPED
+
+                            </option>
+
+
+                            <option value="DELIVERED"
+                                    th:selected="${order.status == 'DELIVERED'}">
+
+                                DELIVERED
+
+                            </option>
+
+
+                            <option value="CANCELLED"
+                                    th:selected="${order.status == 'CANCELLED'}">
+
+                                CANCELLED
+
+                            </option>
+
+
+                        </select>
+
+
+                        <button type="submit"
+                                class="update-btn">
+
+                            Update
+
+                        </button>
+
+
+                    </form>
+
+
+                </td>
+
+
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+
+    <!-- Back -->
+
+    <a href="/admin" class="back-btn">
+
+        ← Back to Admin Dashboard
+
+    </a>
+
+
+</div>
+
+
+<!-- Footer -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

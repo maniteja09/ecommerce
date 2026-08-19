@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Categories | ShopEase</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .logout {
+            color: #fca5a5 !important;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 82%;
+            max-width: 1350px;
+            margin: 60px auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 46px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 20px;
+        }
+
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+            margin-bottom: 28px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 26px;
+            margin: 0;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-edit {
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 9px 16px;
+            margin-right: 8px;
+        }
+
+        .btn-edit:hover {
+            background: #bfdbfe;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 9px 16px;
+        }
+
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+
+        .back-btn {
+            background: #111827;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .back-btn:hover {
+            background: #1f2937;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th {
+            background: #f1f5f9;
+            text-align: left;
+            padding: 18px;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 20px 18px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 16px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .category-name {
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .category-id {
+            color: #64748b;
+        }
+
+
+        /* ================= EMPTY STATE ================= */
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 18px;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 28px;
+            margin-top: 80px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .btn-primary {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/admin"
+           class="admin-btn">
+            Admin
+        </a>
+
+        <a href="/logout"
+           class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main class="container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h1>
+            Manage Categories 📁
+        </h1>
+
+        <p>
+            Create, update and manage product categories in your ShopEase store.
+        </p>
+
+    </div>
+
+
+    <!-- CATEGORY LIST -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Category List
+            </h2>
+
+
+            <a href="/categories/new"
+               class="btn btn-primary">
+
+                ➕ Add New Category
+
+            </a>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        ID
+                    </th>
+
+                    <th>
+                        Category Name
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                <!-- CATEGORY DATA -->
+
+                <tr th:each="category : ${categories}">
+
+
+                    <td class="category-id"
+                        th:text="${category.id}">
+
+                        1
+
+                    </td>
+
+
+                    <td class="category-name"
+                        th:text="${category.name}">
+
+                        Electronics
+
+                    </td>
+
+
+                    <td>
+
+
+                        <a th:href="@{'/admin/categories/edit/' + ${category.id}}"
+                           class="btn btn-edit">
+
+                            ✏️ Edit
+
+                        </a>
+
+
+                        <a th:href="@{'/admin/categories/delete/' + ${category.id}}"
+                           class="btn btn-delete">
+
+                            🗑️ Delete
+
+                        </a>
+
+
+                    </td>
+
+                </tr>
+
+
+                <!-- EMPTY STATE -->
+
+                <tr th:if="${#lists.isEmpty(categories)}">
+
+                    <td colspan="3"
+                        class="empty">
+
+                        📁 No categories found.
+
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK BUTTON -->
+
+    <a href="/admin"
+       class="btn back-btn">
+
+        ← Back to Admin Dashboard
+
+    </a>
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

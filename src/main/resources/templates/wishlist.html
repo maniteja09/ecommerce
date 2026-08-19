@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | My Wishlist</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-link {
+            background: #2563eb;
+            padding: 9px 14px;
+            border-radius: 7px;
+        }
+
+        .logout-link {
+            color: #fca5a5 !important;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .wishlist-section {
+            width: 88%;
+            max-width: 1100px;
+            margin: 45px auto 70px;
+        }
+
+        .page-heading {
+            text-align: center;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 35px;
+        }
+
+
+        /* ================= WISHLIST GRID ================= */
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+
+        /* ================= WISHLIST CARD ================= */
+
+        .wishlist-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
+        }
+
+
+        /* ================= PRODUCT IMAGE ================= */
+
+        .product-image {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        /* ================= CARD CONTENT ================= */
+
+        .card-content {
+            padding: 22px;
+        }
+
+        .product-name {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            color: #2563eb;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .button {
+            width: 100%;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .cart-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .cart-button:hover {
+            background: #1d4ed8;
+        }
+
+        .remove-button {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .remove-button:hover {
+            background: #fecaca;
+        }
+
+
+        /* ================= EMPTY WISHLIST ================= */
+
+        .empty-wishlist {
+            background: white;
+            border-radius: 16px;
+            padding: 70px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        .empty-wishlist h2 {
+            margin-bottom: 12px;
+        }
+
+        .empty-wishlist p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .shop-button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .shop-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= CONTINUE SHOPPING ================= */
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 30px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+            padding: 25px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .wishlist-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .wishlist-section {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+            .page-heading {
+                font-size: 30px;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🛒 ShopEase
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist ❤️
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a sec:authorize="hasRole('ADMIN')"
+           href="/admin"
+           class="admin-link">
+            Admin
+        </a>
+
+        <a href="/logout"
+           class="logout-link">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="wishlist-section">
+
+
+    <h1 class="page-heading">
+        My Wishlist ❤️
+    </h1>
+
+    <p class="page-subtitle">
+        Save your favorite products and shop them whenever you want.
+    </p>
+
+
+    <!-- ================= EMPTY ================= -->
+
+    <div th:if="${#lists.isEmpty(wishlistItems)}"
+         class="empty-wishlist">
+
+        <div class="empty-icon">
+            💔
+        </div>
+
+        <h2>
+            Your wishlist is empty
+        </h2>
+
+        <p>
+            You haven't added any products to your wishlist yet.
+        </p>
+
+        <a href="/products"
+           class="shop-button">
+
+            Explore Products →
+
+        </a>
+
+    </div>
+
+
+    <!-- ================= WISHLIST ITEMS ================= -->
+
+    <div th:if="${!#lists.isEmpty(wishlistItems)}"
+         class="wishlist-grid">
+
+
+        <div th:each="item : ${wishlistItems}"
+             class="wishlist-card">
+
+
+            <!-- PRODUCT IMAGE -->
+
+            <img th:src="${item.product.imageUrl}"
+                 alt="Product Image"
+                 class="product-image">
+
+
+            <!-- CONTENT -->
+
+            <div class="card-content">
+
+
+                <h2 class="product-name"
+                    th:text="${item.product.name}">
+
+                    Product Name
+
+                </h2>
+
+
+                <p class="description"
+                   th:text="${item.product.description}">
+
+                    Product description
+
+                </p>
+
+
+                <p class="price">
+
+                    ₹<span th:text="${item.product.price}">
+                        0
+                    </span>
+
+                </p>
+
+
+                <!-- BUTTONS -->
+
+                <div class="button-group">
+
+
+                    <!-- ADD TO CART -->
+
+                    <form th:action="@{/cart/add/{id}(id=${item.product.id})}"
+                          method="post">
+
+                        <input type="hidden"
+                               name="quantity"
+                               value="1">
+
+                        <button type="submit"
+                                class="button cart-button">
+
+                            🛒 Add to Cart
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- REMOVE -->
+
+                    <form th:action="@{/wishlist/remove/{id}(id=${item.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                class="button remove-button">
+
+                            🗑 Remove
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTINUE SHOPPING -->
+
+    <a href="/products"
+       class="continue-shopping">
+
+        ← Continue Shopping
+
+    </a>
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 ShopEase. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

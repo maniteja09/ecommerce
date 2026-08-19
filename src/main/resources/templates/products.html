@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Products</title>
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-link {
+            background: #2563eb;
+            padding: 9px 14px;
+            border-radius: 7px;
+        }
+
+        .logout-link {
+            color: #fca5a5 !important;
+        }
+
+
+        /* =========================================================
+           PAGE HEADER
+        ========================================================= */
+
+        .page-header {
+            text-align: center;
+            padding: 45px 20px 25px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+
+        /* =========================================================
+           SEARCH / FILTER
+        ========================================================= */
+
+        .search-section {
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px 35px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .search-input {
+            flex: 1;
+
+            padding: 13px 15px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-size: 15px;
+            outline: none;
+
+            background: white;
+
+            transition: 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .category-select {
+            padding: 13px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            background: white;
+
+            font-size: 15px;
+            outline: none;
+
+            min-width: 190px;
+
+            cursor: pointer;
+        }
+
+        .category-select:focus {
+            border-color: #2563eb;
+        }
+
+        .search-button {
+            border: none;
+
+            background: #2563eb;
+            color: white;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+        .search-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .clear-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 13px 20px;
+
+            background: #f3f4f6;
+            color: #374151;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+        .clear-button:hover {
+            background: #e5e7eb;
+        }
+
+
+        /* =========================================================
+           PRODUCTS GRID
+        ========================================================= */
+
+        .products-container {
+            width: 90%;
+            max-width: 1400px;
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 25px;
+
+            padding-bottom: 70px;
+        }
+
+
+        /* =========================================================
+           PRODUCT CARD
+        ========================================================= */
+
+        .product-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                    0 4px 12px rgba(0, 0, 0, 0.05);
+
+            transition:
+                    transform 0.25s ease,
+                    box-shadow 0.25s ease;
+
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                    0 14px 30px rgba(0, 0, 0, 0.10);
+        }
+
+
+        /* =========================================================
+           PRODUCT IMAGE
+        ========================================================= */
+
+        .product-image-container {
+            width: 100%;
+            height: 250px;
+
+            background: #f8fafc;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            padding: 14px;
+
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.04);
+        }
+
+
+        /* =========================================================
+           PRODUCT CONTENT
+        ========================================================= */
+
+        .product-content {
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+
+            flex: 1;
+        }
+
+
+        /* PRODUCT NAME */
+
+        .product-name {
+            font-size: 19px;
+            line-height: 1.35;
+
+            color: #111827;
+
+            margin-bottom: 10px;
+
+            min-height: 52px;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+
+        /* DESCRIPTION */
+
+        .description {
+            color: #6b7280;
+
+            font-size: 14px;
+            line-height: 1.5;
+
+            height: 63px;
+
+            margin-bottom: 14px;
+
+            overflow: hidden;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+
+        /* CATEGORY */
+
+        .category {
+            display: inline-flex;
+            align-items: center;
+
+            width: fit-content;
+
+            background: #eef2ff;
+            color: #4338ca;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            margin-bottom: 14px;
+        }
+
+
+        /* PRICE */
+
+        .price {
+            font-size: 23px;
+
+            font-weight: 700;
+
+            color: #2563eb;
+
+            margin-bottom: 9px;
+        }
+
+
+        /* STOCK */
+
+        .stock {
+            color: #15803d;
+
+            background: #f0fdf4;
+
+            border: 1px solid #dcfce7;
+
+            display: inline-flex;
+            align-items: center;
+
+            width: fit-content;
+
+            padding: 5px 9px;
+
+            border-radius: 6px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            margin-bottom: 18px;
+        }
+
+        .out-of-stock {
+            color: #b91c1c;
+
+            background: #fef2f2;
+
+            border-color: #fee2e2;
+        }
+
+
+        /* =========================================================
+           VIEW DETAILS BUTTON
+        ========================================================= */
+
+        .details-button {
+            display: block;
+
+            text-align: center;
+
+            background: #2563eb;
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+            font-size: 14px;
+
+            margin-top: auto;
+
+            transition: 0.2s;
+        }
+
+        .details-button:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           NO PRODUCTS
+        ========================================================= */
+
+        .no-products {
+            text-align: center;
+
+            padding: 80px 20px;
+
+            color: #6b7280;
+        }
+
+        .no-products h2 {
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            background: #111827;
+
+            color: #d1d5db;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        /* =========================================================
+           TABLET
+        ========================================================= */
+
+        @media (max-width: 1100px) {
+
+            .products-container {
+                width: 92%;
+
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+        }
+
+
+        /* =========================================================
+           SMALL TABLET
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .products-container {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .search-form {
+                flex-wrap: wrap;
+            }
+
+            .search-input {
+                min-width: 200px;
+            }
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-input,
+            .category-select,
+            .search-button,
+            .clear-button {
+                width: 100%;
+            }
+
+            .products-container {
+                width: 92%;
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 16px;
+            }
+
+            .page-header {
+                padding-top: 35px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .product-content {
+                padding: 15px;
+            }
+
+            .product-image-container {
+                height: 210px;
+            }
+
+            .product-name {
+                font-size: 17px;
+            }
+
+            .price {
+                font-size: 20px;
+            }
+        }
+
+
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 500px) {
+
+            .products-container {
+                width: 92%;
+
+                grid-template-columns: 1fr;
+            }
+
+            .product-image-container {
+                height: 240px;
+            }
+
+            .product-content {
+                padding: 18px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        🛒 ShopEase
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/products">
+            Products
+        </a>
+
+
+        <!-- AUTHENTICATED USER -->
+
+        <div sec:authorize="isAuthenticated()">
+
+            <a href="/profile">
+                Profile
+            </a>
+
+
+            <a href="/cart">
+                Cart 🛒
+            </a>
+
+
+            <a href="/wishlist">
+                Wishlist ❤️
+            </a>
+
+
+            <a href="/orders">
+                Orders
+            </a>
+
+
+            <!-- ADMIN -->
+
+            <a sec:authorize="hasRole('ADMIN')"
+               href="/admin"
+               class="admin-link">
+
+                Admin
+
+            </a>
+
+
+            <a href="/logout"
+               class="logout-link">
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+        <!-- NOT AUTHENTICATED -->
+
+        <div sec:authorize="!isAuthenticated()">
+
+            <a href="/login">
+                Login
+            </a>
+
+
+            <a href="/register">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     PAGE HEADER
+========================================================= -->
+
+<section class="page-header">
+
+    <h1>
+        Our Products 🛍️
+    </h1>
+
+    <p>
+        Discover great products at great prices.
+    </p>
+
+</section>
+
+
+<!-- =========================================================
+     SEARCH / FILTER
+========================================================= -->
+
+<section class="search-section">
+
+    <form action="/products"
+          method="get"
+          class="search-form">
+
+
+        <!-- SEARCH -->
+
+        <input type="text"
+               name="keyword"
+               class="search-input"
+               placeholder="🔎 Search products..."
+               th:value="${keyword}">
+
+
+        <!-- CATEGORY -->
+
+        <select name="categoryId"
+                class="category-select">
+
+            <option value="">
+                All Categories
+            </option>
+
+
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"
+                    th:selected="${categoryId == category.id}">
+
+            </option>
+
+        </select>
+
+
+        <!-- SEARCH -->
+
+        <button type="submit"
+                class="search-button">
+
+            Search
+
+        </button>
+
+
+        <!-- CLEAR -->
+
+        <a href="/products"
+           class="clear-button">
+
+            Clear
+
+        </a>
+
+    </form>
+
+</section>
+
+
+<!-- =========================================================
+     NO PRODUCTS
+========================================================= -->
+
+<div th:if="${#lists.isEmpty(products)}"
+     class="no-products">
+
+    <h2>
+        No Products Found 😔
+    </h2>
+
+    <p>
+        Try another search or category.
+    </p>
+
+</div>
+
+
+<!-- =========================================================
+     PRODUCTS
+========================================================= -->
+
+<div class="products-container"
+     th:if="${!#lists.isEmpty(products)}">
+
+
+    <!-- PRODUCT CARD -->
+
+    <div th:each="product : ${products}"
+         class="product-card">
+
+
+        <!-- IMAGE -->
+
+        <div class="product-image-container">
+
+            <img th:src="${product.imageUrl}"
+                 th:alt="${product.name}"
+                 class="product-image">
+
+        </div>
+
+
+        <!-- CONTENT -->
+
+        <div class="product-content">
+
+
+            <!-- NAME -->
+
+            <h2 class="product-name"
+                th:text="${product.name}">
+
+                Product Name
+
+            </h2>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="description"
+               th:text="${product.description}">
+
+                Product Description
+
+            </p>
+
+
+            <!-- CATEGORY -->
+
+            <span class="category">
+
+                🏷️
+
+                <span th:text="${product.category.name}">
+                    Category
+                </span>
+
+            </span>
+
+
+            <!-- PRICE -->
+
+            <p class="price">
+
+                ₹<span th:text="${product.price}">
+                    0
+                </span>
+
+            </p>
+
+
+            <!-- STOCK -->
+
+            <p th:class="${product.stock > 0
+                          ? 'stock'
+                          : 'stock out-of-stock'}">
+
+
+                <span th:if="${product.stock > 0}">
+
+                    ✓ In Stock:
+
+                    <span th:text="${product.stock}">
+                        0
+                    </span>
+
+                </span>
+
+
+                <span th:if="${product.stock == 0}">
+
+                    ✕ Out of Stock
+
+                </span>
+
+            </p>
+
+
+            <!-- DETAILS -->
+
+            <a th:href="@{/products/{id}(id=${product.id})}"
+               class="details-button">
+
+                View Details →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <p>
+        © 2026 ShopEase. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+</html>

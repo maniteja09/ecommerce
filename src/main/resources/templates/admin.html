@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | ShopEase</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fc;
+            color: #111827;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 76px;
+            background: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 11px 18px;
+            border-radius: 8px;
+        }
+
+        .logout {
+            color: #ff8b8b !important;
+        }
+
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            text-align: center;
+            padding: 55px 20px 40px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+
+        /* ================= DASHBOARD ================= */
+
+        .dashboard {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+
+        /* ================= STAT CARDS ================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e5e7eb;
+        }
+
+        .stat-icon {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card h3 {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+
+        /* ================= MANAGEMENT ================= */
+
+        .section-title {
+            font-size: 28px;
+            margin: 35px 0 20px;
+        }
+
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .management-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e5e7eb;
+        }
+
+        .management-card h2 {
+            margin-bottom: 12px;
+            font-size: 24px;
+        }
+
+        .management-card p {
+            color: #64748b;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .manage-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .manage-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .quick-actions h2 {
+            margin-bottom: 20px;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: #111827;
+            color: white;
+            font-weight: bold;
+        }
+
+        .quick-btn:hover {
+            background: #1f2937;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 900px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .management-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+                padding: 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard {
+                width: 92%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/admin"
+           class="admin-btn">
+            Admin
+        </a>
+
+        <a href="/logout"
+           class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= PAGE HEADER ================= -->
+
+<section class="page-header">
+
+    <h1>
+        Admin Dashboard 📊
+    </h1>
+
+    <p>
+        Manage your ShopEase store from one place.
+    </p>
+
+</section>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<div class="dashboard">
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="stats-grid">
+
+
+        <!-- PRODUCTS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+            <h3>
+                Total Products
+            </h3>
+
+            <div class="stat-number"
+                 th:text="${#lists.size(products)}">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🗂️
+            </div>
+
+            <h3>
+                Total Categories
+            </h3>
+
+            <div class="stat-number"
+                 th:text="${#lists.size(categories)}">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- USERS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+            <h3>
+                Total Users
+            </h3>
+
+            <div class="stat-number"
+                 th:text="${#lists.size(users)}">
+                0
+            </div>
+
+        </div>
+
+
+        <!-- ORDERS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🛒
+            </div>
+
+            <h3>
+                Total Orders
+            </h3>
+
+            <div class="stat-number"
+                 th:text="${#lists.size(orders)}">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MANAGEMENT ================= -->
+
+    <h2 class="section-title">
+        Manage Store
+    </h2>
+
+
+    <div class="management-grid">
+
+
+        <!-- PRODUCTS -->
+
+        <div class="management-card">
+
+            <h2>
+                📦 Products
+            </h2>
+
+            <p>
+                Add, update, delete and manage all products
+                available in your store.
+            </p>
+
+            <a href="/admin/products"
+               class="manage-btn">
+                Manage Products →
+            </a>
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <div class="management-card">
+
+            <h2>
+                🗂️ Categories
+            </h2>
+
+            <p>
+                Organize your products by creating and managing
+                product categories.
+            </p>
+
+            <a href="/admin/categories"
+               class="manage-btn">
+                Manage Categories →
+            </a>
+
+        </div>
+
+
+        <!-- USERS -->
+
+        <div class="management-card">
+
+            <h2>
+                👥 Users
+            </h2>
+
+            <p>
+                View registered users and manage customer
+                accounts.
+            </p>
+
+            <a href="/admin/users"
+               class="manage-btn">
+                Manage Users →
+            </a>
+
+        </div>
+
+
+        <!-- ORDERS -->
+
+        <div class="management-card">
+
+            <h2>
+                🛍️ Orders
+            </h2>
+
+            <p>
+                View customer orders and manage order
+                information.
+            </p>
+
+            <a href="/admin/orders"
+               class="manage-btn">
+                Manage Orders →
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= QUICK ACTIONS ================= -->
+
+    <div class="quick-actions">
+
+        <h2>
+            Quick Actions ⚡
+        </h2>
+
+        <div class="quick-buttons">
+
+            <a href="/admin/products"
+               class="quick-btn">
+                ➕ Add Product
+            </a>
+
+            <a href="/admin/categories"
+               class="quick-btn">
+                ➕ Add Category
+            </a>
+
+            <a href="/admin/users"
+               class="quick-btn">
+                👥 View Users
+            </a>
+
+            <a href="/admin/orders"
+               class="quick-btn">
+                📦 View Orders
+            </a>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>

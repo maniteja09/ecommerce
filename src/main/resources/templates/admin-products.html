@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Products | ShopEase</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fc;
+            color: #111827;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 76px;
+            background: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        .admin-btn {
+            background: #2563eb;
+            padding: 11px 18px;
+            border-radius: 8px;
+        }
+
+        .logout {
+            color: #ff8b8b !important;
+        }
+
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            text-align: center;
+            padding: 50px 20px 35px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: 0 auto 60px;
+        }
+
+
+        /* ================= TOP BAR ================= */
+
+        .top-bar {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar h2 {
+            font-size: 24px;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 13px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f1f5f9;
+        }
+
+        th {
+            text-align: left;
+            padding: 17px 15px;
+            font-size: 15px;
+            color: #334155;
+        }
+
+        td {
+            padding: 17px 15px;
+            border-top: 1px solid #e5e7eb;
+            color: #475569;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .stock {
+            font-weight: bold;
+        }
+
+        .stock-good {
+            color: #16a34a;
+        }
+
+        .stock-low {
+            color: #dc2626;
+        }
+
+
+        /* ================= ACTION BUTTONS ================= */
+
+        .action-btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .edit-btn:hover {
+            background: #bfdbfe;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #dc2626;
+            margin-left: 5px;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+
+        /* ================= EMPTY STATE ================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+
+        /* ================= BACK BUTTON ================= */
+
+        .back-section {
+            margin-top: 25px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #1f2937;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                height: auto;
+                padding: 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🛒 ShopEase
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Products
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/cart">
+            Cart 🛒
+        </a>
+
+        <a href="/wishlist">
+            Wishlist 💗
+        </a>
+
+        <a href="/orders">
+            Orders
+        </a>
+
+        <a href="/admin"
+           class="admin-btn">
+            Admin
+        </a>
+
+        <a href="/logout"
+           class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= PAGE HEADER ================= -->
+
+<section class="page-header">
+
+    <h1>
+        Manage Products 📦
+    </h1>
+
+    <p>
+        Add, update and manage products in your ShopEase store.
+    </p>
+
+</section>
+
+
+<!-- ================= CONTENT ================= -->
+
+<div class="container">
+
+
+    <!-- TOP BAR -->
+
+    <div class="top-bar">
+
+        <h2>
+            Product List
+        </h2>
+
+        <a href="/products/new"
+           class="add-btn">
+            ➕ Add New Product
+        </a>
+
+    </div>
+
+
+    <!-- PRODUCT TABLE -->
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    ID
+                </th>
+
+                <th>
+                    Product
+                </th>
+
+                <th>
+                    Description
+                </th>
+
+                <th>
+                    Price
+                </th>
+
+                <th>
+                    Stock
+                </th>
+
+                <th>
+                    Actions
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            <tr th:each="product : ${products}">
+
+                <td th:text="${product.id}">
+                    1
+                </td>
+
+
+                <td class="product-name"
+                    th:text="${product.name}">
+                    Product Name
+                </td>
+
+
+                <td th:text="${product.description}">
+                    Product Description
+                </td>
+
+
+                <td class="price">
+
+                    ₹<span th:text="${product.price}">
+                        0
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="stock"
+                          th:classappend="${product.stock > 5 ? ' stock-good' : ' stock-low'}"
+                          th:text="${product.stock}">
+                        0
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <a th:href="@{'/admin/products/edit/' + ${product.id}}"
+                       class="action-btn edit-btn">
+                        ✏️ Edit
+                    </a>
+
+
+                    <a th:href="@{'/admin/products/delete/' + ${product.id}}"
+                       class="action-btn delete-btn"
+                       onclick="return confirm('Are you sure you want to delete this product?');">
+                        🗑️ Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+
+            <!-- EMPTY STATE -->
+
+            <tr th:if="${#lists.isEmpty(products)}">
+
+                <td colspan="6">
+
+                    <div class="empty-state">
+
+                        <div class="icon">
+                            📦
+                        </div>
+
+                        <h2>
+                            No Products Found
+                        </h2>
+
+                        <p>
+                            Start by adding your first product.
+                        </p>
+
+                        <br>
+
+                        <a href="/products/new"
+                           class="add-btn">
+                            ➕ Add Product
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <div class="back-section">
+
+        <a href="/admin"
+           class="back-btn">
+            ← Back to Admin Dashboard
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 ShopEase. All Rights Reserved.
+
+</footer>
+
+
+</body>
+
+</html>
