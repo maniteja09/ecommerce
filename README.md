@@ -2,12 +2,14 @@
 
 # Java E-Commerce Platform
 
-A full-stack e-commerce web application built using Java and Spring Boot.  
+A full-stack e-commerce web application built using Java and Spring Boot.
+
 The application provides product management, categories, shopping cart, checkout, orders, and user-based functionality.
 
 ## Features
 
 ### User Features
+
 - User registration and login
 - Browse products
 - Search products
@@ -26,26 +28,43 @@ The application provides product management, categories, shopping cart, checkout
 - View individual order details
 
 ### Admin Features
+
 - Manage categories
 - Add, edit and delete categories
 - Manage products
 - View all orders
 - Update order status
 
-## Technology Stack
+## Tech Stack
 
-- Java
+### Backend
+
+- Java 21
 - Spring Boot
 - Spring MVC
 - Spring Data JPA
 - Spring Security
 - Hibernate
 - Thymeleaf
-- Maven
+
+### Database
+
+- MySQL
+
+### Testing
+
 - JUnit
 - Mockito
 - MockMvc
-- MySQL
+- Spring Boot Test
+- 92 automated tests
+- JaCoCo code coverage
+
+### Build & CI/CD
+
+- Maven
+- Git
+- GitHub Actions
 
 ## Project Structure
 
@@ -57,7 +76,9 @@ src/
 │   │       ├── controller/
 │   │       ├── entity/
 │   │       ├── repository/
-│   │       └── service/
+│   │       ├── service/
+│   │       ├── config/
+│   │       └── exception/
 │   │
 │   └── resources/
 │       ├── templates/
